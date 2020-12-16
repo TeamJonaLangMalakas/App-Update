@@ -3,6 +3,7 @@ package com.example.nestegggg;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
+public class Adapter extends RecyclerView.Adapter<Adapter.Holder>{
 
 
     private Context context;
@@ -82,12 +83,46 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
         builder.create().show();
     }
 
+    private void editDialog(String position, final String id, final String title, final String amount, final String addTimeStamp, final String updateTimeStamp) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setIcon(R.drawable.ic_action_edit);
+        builder.setCancelable(false);
+        builder.setTitle("Edit");
+        builder.setMessage("Are you want to edit?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Intent intent = new Intent(context, AddGoals.class);
+                intent.putExtra("ID", id);
+                intent.putExtra("TITLE", title);
+                intent.putExtra("AMOUNT", amount);
+                intent.putExtra("ADD_TIMESTAMP", addTimeStamp);
+                intent.putExtra("UPDATE_TIMESTAMP", updateTimeStamp);
+                intent.putExtra("editMode", true);
+                context.startActivity(intent);
+
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.create().show();
+    }
+
     @Override
     public int getItemCount() {
         return arrayList.size();
     }
 
-    class Holder extends RecyclerView.ViewHolder{
+    class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView goalimg;
         TextView title, amount;
@@ -96,6 +131,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.Holder> {
             goalimg = itemView.findViewById(R.id.goalIMG);
             title = itemView.findViewById(R.id.goaltitle);
             amount = itemView.findViewById(R.id.goalamount);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int goal = getAdapterPosition();
+            Toast.makeText(context, "goal"+goal, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, Goals.class);
+            context.startActivity(intent);
         }
     }
 }

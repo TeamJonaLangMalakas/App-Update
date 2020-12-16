@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this, AddGoals.class);
+                intent.putExtra("editmode", false);
                 startActivity(intent);
             }
         });
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(MainActivity.this,
                 databaseHelper.getAllData(Constants.C_Add_TIMESTAMP + " DESC"));
         mRecyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -50,5 +52,16 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         showRecord();
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        exitFromApp();
+    }
+
+    private void exitFromApp() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
     }
 }

@@ -80,6 +80,7 @@ public class AddGoals extends AppCompatActivity {
                 getData();
                 startActivity(new Intent(AddGoals.this, MainActivity.class));
                 Toast.makeText(AddGoals.this, "Information Added Successfully!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
